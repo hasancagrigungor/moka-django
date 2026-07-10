@@ -2,26 +2,26 @@
 
 > **Bu kütüphane bağımsız olarak geliştirilmiştir; Moka United'ın resmi ürünü değildir, Moka United tarafından geliştirilmemiş, onaylanmamış ve desteklenmemektedir.**
 
-Moka United sanal POS entegrasyonu icin Django uygulamasi.
+Moka United sanal POS entegrasyonu için Django uygulaması.
 
-Bu paket, [moka-python](https://pypi.org/project/moka-python/) kutuphanesinin ustune Django projelerinde ihtiyac duyulan katmani ekler: odeme kaydi tutan model, 3D Secure callback dogrulama gorunumu, odeme baslatma fonksiyonlari, sinyaller ve admin entegrasyonu. Moka United API'sinin tamamina (kart saklama, tekrarlayan odeme, raporlama vb.) moka-python istemcisi uzerinden erisilebilir.
+Bu paket, [moka-python](https://pypi.org/project/moka-python/) kütüphanesinin üstüne Django projelerinde ihtiyaç duyulan katmanı ekler: ödeme kaydı tutan model, 3D Secure callback doğrulama görünümü, ödeme başlatma fonksiyonları, sinyaller ve admin entegrasyonu. Moka United API'sinin tamamına (kart saklama, tekrarlayan ödeme, raporlama vb.) moka-python istemcisi üzerinden erişilebilir.
 
-## Ozellikler
+## Özellikler
 
-- settings.py uzerinden yapilandirma (test / canli ortam secimi)
-- Non-3D odeme akisi: tek fonksiyonla odeme yap, sonucu veritabanina isle
-- 3D Secure odeme akisi: odeme baslat, CodeForHash degerini sakla, kullaniciyi bankaya yonlendir
-- Hazir callback gorunumu: hashValue dogrulamasi (SHA-256, T/F kurali), kayit guncelleme ve yonlendirme
+- settings.py üzerinden yapılandırma (test / canlı ortam seçimi)
+- Non-3D ödeme akışı: tek fonksiyonla ödeme yap, sonucu veritabanına işle
+- 3D Secure ödeme akışı: ödeme başlat, CodeForHash değerini sakla, kullanıcıyı bankaya yönlendir
+- Hazır callback görünümü: hashValue doğrulaması (SHA-256, T/F kuralı), kayıt güncelleme ve yönlendirme
 - moka_payment_succeeded ve moka_payment_failed sinyalleri
-- MokaPayment modeli ve Django admin kaydi
-- Sakli kartla (CardToken) odeme destegi
-- Moka United API'sinin tum servislerine get_moka_client ile dogrudan erisim
-- Test kartlariyla calisan kapsamli test paketi
+- MokaPayment modeli ve Django admin kaydı
+- Saklı kartla (CardToken) ödeme desteği
+- Moka United API'sinin tüm servislerine get_moka_client ile doğrudan erişim
+- Test kartlarıyla çalışan kapsamlı test paketi
 
 ## Gereksinimler
 
-- Python 3.8 ve uzeri
-- Django 3.2 ve uzeri
+- Python 3.8 ve üzeri
+- Django 3.2 ve üzeri
 - moka-python
 
 ## Kurulum
@@ -30,7 +30,7 @@ Bu paket, [moka-python](https://pypi.org/project/moka-python/) kutuphanesinin us
 pip install moka-django
 ```
 
-settings.py dosyaniza uygulamayi ve ayarlari ekleyin:
+settings.py dosyanıza uygulamayı ve ayarları ekleyin:
 
 ```python
 INSTALLED_APPS = [
@@ -49,7 +49,7 @@ MOKA = {
 }
 ```
 
-Ana urls.py dosyaniza callback adresini ekleyin:
+Ana urls.py dosyanıza callback adresini ekleyin:
 
 ```python
 from django.urls import include, path
@@ -60,7 +60,7 @@ urlpatterns = [
 ]
 ```
 
-Veritabani tablosunu olusturun:
+Veritabanı tablosunu oluşturun:
 
 ```bash
 python manage.py migrate moka_django
@@ -68,23 +68,23 @@ python manage.py migrate moka_django
 
 ### Ayarlar
 
-| Ayar | Zorunlu | Varsayilan | Aciklama |
+| Ayar | Zorunlu | Varsayılan | Açıklama |
 | --- | --- | --- | --- |
 | DEALER_CODE | Evet | - | Moka United bayi kodu |
-| USERNAME | Evet | - | API kullanici adi |
-| PASSWORD | Evet | - | API sifresi |
-| ENVIRONMENT | Hayir | "test" | "test": service.refmokaunited.com, "production": service.mokaunited.com |
-| BASE_URL | Hayir | None | Verilirse ENVIRONMENT ayarini ezer (ornegin eski service.refmoka.com adresi icin) |
-| SOFTWARE | Hayir | "moka-django" | Isteklerde gonderilen yazilim adi |
-| TIMEOUT | Hayir | 30 | HTTP istek zaman asimi (saniye) |
-| CALLBACK_SUCCESS_URL | Hayir | "/" | Basarili 3D odemede yonlendirilecek adres |
-| CALLBACK_FAIL_URL | Hayir | "/" | Basarisiz 3D odemede yonlendirilecek adres |
+| USERNAME | Evet | - | API kullanıcı adı |
+| PASSWORD | Evet | - | API şifresi |
+| ENVIRONMENT | Hayır | "test" | "test": service.refmokaunited.com, "production": service.mokaunited.com |
+| BASE_URL | Hayır | None | Verilirse ENVIRONMENT ayarını ezer (örneğin eski service.refmoka.com adresi için) |
+| SOFTWARE | Hayır | "moka-django" | İsteklerde gönderilen yazılım adı |
+| TIMEOUT | Hayır | 30 | HTTP istek zaman aşımı (saniye) |
+| CALLBACK_SUCCESS_URL | Hayır | "/" | Başarılı 3D ödemede yönlendirilecek adres |
+| CALLBACK_FAIL_URL | Hayır | "/" | Başarısız 3D ödemede yönlendirilecek adres |
 
-CheckKey degeri (DealerCode + "MK" + Username + "PD" + Password bilgisinin SHA-256 ozeti) her istekte otomatik uretilir.
+CheckKey değeri (DealerCode + "MK" + Username + "PD" + Password bilgisinin SHA-256 özeti) her istekte otomatik üretilir.
 
-## 3D Secure ile Odeme
+## 3D Secure ile Ödeme
 
-Onerilen akis 3D Secure'dur. Odeme baslatilir, kullanici bankanin dogrulama sayfasina yonlendirilir, sonuc callback adresinize POST edilir:
+Önerilen akış 3D Secure'dur. Ödeme başlatılır, kullanıcı bankanın doğrulama sayfasına yönlendirilir, sonuç callback adresinize POST edilir:
 
 ```python
 from django.shortcuts import redirect, render
@@ -117,11 +117,11 @@ def odeme_yap(request):
     })
 ```
 
-Kart dogrulamasi tamamlandiginda Moka United, callback adresinize hashValue, resultCode, resultMessage, trxCode ve OtherTrxCode alanlarini POST eder. Paketin hazir MokaCallbackView gorunumu bu istegi alir, hashValue degerini SHA-256 kuraliyla dogrular (CodeForHash + "T" basarili, CodeForHash + "F" basarisiz), MokaPayment kaydini gunceller, ilgili sinyali gonderir ve kullaniciyi CALLBACK_SUCCESS_URL veya CALLBACK_FAIL_URL adresine `?payment=<other_trx_code>` parametresiyle yonlendirir.
+Kart doğrulaması tamamlandığında Moka United, callback adresinize hashValue, resultCode, resultMessage, trxCode ve OtherTrxCode alanlarını POST eder. Paketin hazır MokaCallbackView görünümü bu isteği alır, hashValue değerini SHA-256 kuralıyla doğrular (CodeForHash + "T" başarılı, CodeForHash + "F" başarısız), MokaPayment kaydını günceller, ilgili sinyali gönderir ve kullanıcıyı CALLBACK_SUCCESS_URL veya CALLBACK_FAIL_URL adresine `?payment=<other_trx_code>` parametresiyle yönlendirir.
 
 ### Sinyaller
 
-Odeme sonucuna gore is mantiginizi sinyallerle baglayin:
+Ödeme sonucuna göre is mantığınızı sinyallerle bağlayın:
 
 ```python
 from django.dispatch import receiver
@@ -141,7 +141,7 @@ def odeme_basarisiz(sender, payment, **kwargs):
     ...
 ```
 
-### Callback davranisini ozellestirme
+### Callback davranışını özelleştirme
 
 ```python
 from django.shortcuts import render
@@ -157,15 +157,15 @@ class OzelCallbackView(MokaCallbackView):
         return render(request, "odeme_hata.html", {"payment": payment})
 ```
 
-Bu durumda urls.py dosyanizda hazir `moka_django.urls` yerine kendi gorunumunuzu baglayin:
+Bu durumda urls.py dosyanızda hazır `moka_django.urls` yerine kendi görünümünüzü bağlayın:
 
 ```python
 path("moka/callback/", OzelCallbackView.as_view(), name="moka-callback"),
 ```
 
-## 3D Secure Olmadan Odeme (Non-3D)
+## 3D Secure Olmadan Ödeme (Non-3D)
 
-Bayinizin Non-3D islem yetkisi varsa tek adimda odeme alabilirsiniz:
+Bayinizin Non-3D işlem yetkisi varsa tek adımda ödeme alabilirsiniz:
 
 ```python
 from moka_django.payments import create_payment, get_client_ip
@@ -188,15 +188,15 @@ if payment.status == payment.STATUS_SUCCESS:
     ...
 ```
 
-### Sakli kartla odeme
+### Saklı kartla ödeme
 
 ```python
 payment, response = create_payment(amount="100.50", card_token="kart tokeni")
 ```
 
-### Ek API alanlari
+### Ek API alanları
 
-CreatePaymentRequest uzerindeki diger alanlar `extra` sozluguyle gonderilir:
+CreatePaymentRequest üzerindeki diğer alanlar `extra` sözlüğüyle gönderilir:
 
 ```python
 payment, response = create_payment(
@@ -213,22 +213,22 @@ payment, response = create_payment(
 
 ## MokaPayment Modeli
 
-Her odeme girisimi veritabanina kaydedilir:
+Her ödeme girisimi veritabanına kaydedilir:
 
-| Alan | Aciklama |
+| Alan | Açıklama |
 | --- | --- |
-| other_trx_code | Moka United'a gonderilen benzersiz islem kodu (OtherTrxCode) |
-| code_for_hash | 3D odemede saklanan dogrulama kodu (CodeForHash) |
-| virtual_pos_order_id | Basarili islemde donen siparis numarasi; iptal ve iade islemlerinde kullanilir |
-| amount, currency, installment_number | Tutar, para birimi, taksit sayisi |
-| is_three_d | 3D Secure odeme olup olmadigi |
+| other_trx_code | Moka United'a gönderilen benzersiz işlem kodu (OtherTrxCode) |
+| code_for_hash | 3D ödemede saklanan doğrulama kodu (CodeForHash) |
+| virtual_pos_order_id | Başarılı işlemde dönen sipariş numarası; iptal ve iade işlemlerinde kullanılır |
+| amount, currency, installment_number | Tutar, para birimi, taksit sayısı |
+| is_three_d | 3D Secure ödeme olup olmadığı |
 | status | created, redirected, success, failed, cancelled, refunded |
-| result_code, result_message | Basarisiz islemde hata kodu ve mesaji |
+| result_code, result_message | Başarısız işlemde hata kodu ve mesajı |
 | completed_at, created_at, updated_at | Zaman bilgileri |
 
-## Diger Moka United Servisleri
+## Diğer Moka United Servisleri
 
-Iptal, iade, kart saklama, tekrarlayan odeme, raporlama gibi tum servislere ayarlarinizla yapilandirilmis istemci uzerinden erisebilirsiniz:
+İptal, iade, kart saklama, tekrarlayan ödeme, raporlama gibi tüm servislere ayarlarınızla yapılandırılmış istemci üzerinden erişebilirsiniz:
 
 ```python
 from moka import models
@@ -257,15 +257,15 @@ yanit = client.payments().retrieve_installment_info(
 )
 ```
 
-Servislerin tam listesi ve ornekleri icin moka-python dokumantasyonuna bakiniz.
+Servislerin tam listesi ve örnekleri için moka-python dokümantasyonuna bakınız.
 
-## Test Kartlari
+## Test Kartları
 
-Test ortaminda (ENVIRONMENT = "test") Moka United test kartlari kullanilabilir. Bu kartlarla yapilan odemeler bankaya gonderilmez; cevap Moka United sisteminden doner. Guncel test karti listesi icin resmi dokumantasyona bakiniz (liste zaman icinde degisebilir):
+Test ortamında (ENVIRONMENT = "test") Moka United test kartları kullanılabilir. Bu kartlarla yapılan ödemeler bankaya gönderilmez; cevap Moka United sisteminden döner. Güncel test kartı listesi için resmi dokümantasyona bakınız (liste zaman içinde değişebilir):
 
 https://developer.mokaunited.com/home.php?page=test-kartlari
 
-Gelistirme kolayligi icin kartlara moka-python icinden de erisilebilir:
+Geliştirme kolaylığı için kartlara moka-python içinden de erişilebilir:
 
 ```python
 from moka import get_test_card
@@ -280,9 +280,9 @@ pip install Django moka-python
 python runtests.py
 ```
 
-Testler ag baglantisi gerektirmez; Moka istemcisi sahte yanitlarla taklit edilir ve callback dogrulamasi gercek hash kuraliyla test edilir.
+Testler ağ bağlantısı gerektirmez; Moka istemcisi sahte yanıtlarla taklit edilir ve callback doğrulaması gerçek hash kuralıyla test edilir.
 
-## PyPI Yayinlama (twine)
+## PyPI Yayınlama (twine)
 
 ```bash
 pip install build twine
@@ -292,4 +292,4 @@ twine upload dist/*
 
 ## Lisans
 
-MIT lisansi ile dagitilmaktadir. Ayrintilar icin LICENSE dosyasina bakiniz.
+MIT lisansı ile dağıtılmaktadır. Ayrıntılar için LICENSE dosyasına bakınız.

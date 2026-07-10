@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "moka-django"
-version = "1.0.1"
-description = "Moka United sanal POS entegrasyonu icin Django uygulamasi. Bu kütüphane bağımsız olarak geliştirilmiştir; Moka United'ın resmi ürünü değildir, Moka United tarafından geliştirilmemiş, onaylanmamış ve desteklenmemektedir."
+version = "1.0.2"
+description = "Moka United sanal POS entegrasyonu için Django uygulaması. Bu kütüphane bağımsız olarak geliştirilmiştir; Moka United'ın resmi ürünü değildir, Moka United tarafından geliştirilmemiş, onaylanmamış ve desteklenmemektedir."
 readme = "README.md"
 license = { text = "MIT" }
 authors = [
